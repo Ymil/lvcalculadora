@@ -19,7 +19,6 @@ if not (2,7) == sys.version_info[0:2]:
 
 class App():
 	def __init__(self):
-		print __name__
 		self.__buttonStructure = (
 			('1','2','3','+'), 
 			('4','5','6','-'), 
@@ -60,8 +59,7 @@ class App():
 			for label in line:
 				button = gtk.Button(label)
 				button.connect('clicked', self.__eventHandleClick)
-				hBox.pack_start(button, 1, 1, 5)
-				print 'ok'
+				hBox.pack_start(button, 1, 1, 5)				
 
 
 	def __createWindowStructure(self):
@@ -95,4 +93,7 @@ class App():
 			self.__deleteValuesEntry()
 		self.__entryBox.set_text(self.__entryValues)
 
-print __name__
+if __name__ == "__main__":
+	app = App()
+	app.showView()
+	del app
