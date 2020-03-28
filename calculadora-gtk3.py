@@ -6,50 +6,56 @@ Sitio web: tutorialdeprogramacion.com
 Licencia: Creative Commons
 '''
 
+from gi.repository import Gtk
 import gi
 gi.require_version('Gtk', '3.0')
-from gi.repository import Gtk
+
 
 class CalcWindow(Gtk.Window):
     estructura_calculadora = [
-        ["1", "2", "3", "4", "-", "DEL"],
-        ["5", "6", "7", "8", "/", "AC"],
-        ["9", "0", "%", "*", "+", "="],
+        ['1', '2', '3', '4', '-', 'DEL'],
+        ['5', '6', '7', '8', '/', 'AC'],
+        ['9', '0', '%', '*', '+', '='],
     ]
-    
+
     def __init__(self):
-        Gtk.Window.__init__(self, title="Calculadora")
-        grid = Gtk.Grid()  
+        Gtk.Window.__init__(self, title='Nuestra primera calculadora')
+
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         self.add(vbox)
-        
+
+        grid = Gtk.Grid()
         self.entry = Gtk.Entry()
+
         vbox.pack_start(self.entry, True, True, 0)
-        vbox.pack_start(grid, True, True, 0)
-        
+        vbox.pack_end(grid, True, True, 0)
+
         y = 0
-        for fila in estructura_calculadora:
+        for fila in self.estructura_calculadora:
             x = 0
             for columna in fila:
-                    button = Gtk.Button(label=columna)
-                    button.connect("clicked", self.__click_button)
-                    grid.attach(button, x, y, 1, 1)
-                    x += 1
+                button = Gtk.Button(label=columna)
+                button.connect("clicked", self.__clicked_button)
+                grid.attach(button, x, y, 1, 1)
+                x += 1
             y += 1
-            
-    def __click_button(self, widget):
+
+    def __clicked_button(self, widget):
         label = widget.get_label()
-        entry_text = self.entry.get_text() 
-        if( label == 'DEL' ):
-            self.entry.set_text(entry_text[:-1])
-        elif( label == 'AC' ):
+        text_entry = self.entry.get_text()
+        if(label == "DEL"):
+            text_entry = text_entry[:-1]
+            self.entry.set_text(text_entry)
+        elif(label == "AC"):
             self.entry.set_text("")
-        elif( label == '=' ):
-            result = str(eval(entry_text))
+        elif(label == "="):
+            result = str(eval(text_entry))
             self.entry.set_text(result)
         else:
-            self.entry.set_text(entry_text+label)
-               
+            text_entry += label
+            self.entry.set_text(text_entry)
+
+
 win = CalcWindow()
 win.connect("destroy", Gtk.main_quit)
 win.show_all()
